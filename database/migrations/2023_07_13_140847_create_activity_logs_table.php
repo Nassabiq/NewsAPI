@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
 
-            $table->string('logs');
+            $table->string('log_name');
+            $table->string('activity');
             $table->foreignId('causer')->constrained()->references('id')->on('users');
             $table->timestamps();
         });

@@ -9,5 +9,15 @@ class News extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = ['title', 'content', 'image', 'author'];
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(NewsComment::class);
+    }
 }
