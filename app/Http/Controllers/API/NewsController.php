@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
+    // TEMPORARY TO DO LIST FRIDAY
+    // - SET MIDDLEWARE ROLES IN THIS CONTROLLER 
+
     /**
      * Display a listing of the resource.
      */
