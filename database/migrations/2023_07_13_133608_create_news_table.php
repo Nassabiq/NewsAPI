@@ -18,7 +18,7 @@ return new class extends Migration
             $table->longText('content');
             $table->longText('image');
 
-            $table->foreignId('author')->constrained()->references('id')->on('users');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

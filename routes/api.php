@@ -20,5 +20,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::resource('/news', NewsController::class);
+    Route::resource('/news', NewsController::class)->except(['create', 'edit']);
+
+    //Logout
+    Route::post('/logout', [AuthController::class, 'logout']);
 });

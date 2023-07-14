@@ -3,36 +3,27 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\NewsRequest;
+use App\Interfaces\NewsRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class NewsController extends Controller
 {
-    // TEMPORARY TO DO LIST FRIDAY
-    // - SET MIDDLEWARE ROLES IN THIS CONTROLLER 
+    protected $newsSenewsRepositoryInterfacervice;
+
+    public function __construct(NewsRepositoryInterface $newsRepositoryInterface)
+    {
+        $this->middleware('role')->except(['index', 'show']);
+        $this->newsRepositoryInterface = $newsRepositoryInterface;
+    }
 
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return 'Test';
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        return $this->newsRepositoryInterface->getAll();
     }
 
     /**
@@ -40,23 +31,45 @@ class NewsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return $this->newsRepositoryInterface->getById($id);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Store a newly created resource in storage.
      */
-    public function edit(string $id)
+    public function store(NewsRequest $request)
     {
-        //
+        $imageName = $request->hasFile('image') ? $this->storeImageTmp($request->image) : null;
+
+        $data = $request->all();
+        $data['image'] = $imageName;
+        $data['user_id'] = Auth::user()->id;
+
+        return $this->newsRepositoryInterface->storeNews($data);
+    }
+
+    public function storeImageTmp($request)
+    {
+        $path = public_path('tmp');
+        $imageName = $request->getClientOriginalName();
+
+        if (File::exists($path . $imageName)) File::delete($path . $imageName);
+        $request->move($path, $imageName);
+
+        return $imageName;
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(NewsRequest $request, string $id)
     {
-        //
+        $imageName = $request->hasFile('image') ? $this->storeImageTmp($request->image) : null;
+
+        $data = $request->all();
+        $data['image'] = $imageName;
+
+        return $this->newsRepositoryInterface->updateNews($data, $id);
     }
 
     /**
@@ -64,6 +77,6 @@ class NewsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return $this->newsRepositoryInterface->deleteNews($id);
     }
 }
