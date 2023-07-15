@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\Models\News;
 use App\Http\Resources\NewsResource;
 use App\Interfaces\NewsRepositoryInterface;
+use App\Jobs\PostComments;
+use App\Models\NewsComment;
 use App\Traits\ApiResponse;
 use App\Traits\ActivityLog;
 use Illuminate\Support\Facades\Auth;
@@ -110,7 +112,15 @@ class NewsRepository implements NewsRepositoryInterface
         return $this->failedResponse('Data Tidak Ditemukan', 400);
     }
 
-    public function comments()
+    public function comments($data, $id)
     {
+        // Still Confusing How to Use Redis as Queue Job
+
+        $data['news_id'] = $id;
+        $job = NewsComment::create($data);
+        PostComments::dispatch($job)->onConnection('redis')->onQueue('processing');
+
+        $result = NewsComment::get();
+        return $result;
     }
 }

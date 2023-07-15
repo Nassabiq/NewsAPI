@@ -9,7 +9,7 @@ class NewsComment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['comments', 'news_id'];
+    protected $fillable = ['comment', 'news_id'];
 
     public function news()
     {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewsCommentRequest;
 use App\Http\Requests\NewsRequest;
 use App\Interfaces\NewsRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,6 @@ class NewsController extends Controller
 
     public function __construct(NewsRepositoryInterface $newsRepositoryInterface)
     {
-        $this->middleware('role')->except(['index', 'show', 'comments']);
         $this->newsRepositoryInterface = $newsRepositoryInterface;
     }
 
@@ -80,8 +80,8 @@ class NewsController extends Controller
         return $this->newsRepositoryInterface->deleteNews($id);
     }
 
-    public function comments()
+    public function comments(NewsCommentRequest $request, string $id)
     {
-        return $this->newsRepositoryInterface->comments();
+        return $this->newsRepositoryInterface->comments($request->all(), $id);
     }
 }
