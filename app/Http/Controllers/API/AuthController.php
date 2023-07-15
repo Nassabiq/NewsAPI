@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -36,20 +37,13 @@ class AuthController extends Controller
         }
     }
 
-    public function register(Request $request)
+    public function register(UserRequest $request)
     {
-        $validator =  Validator::make($request->all(), [
-            'name' => 'required|min:4',
-            'email' => 'required|email',
-            'password' => 'required|min:8',
-        ]);
-
-        if ($validator->fails()) return response(['errors' => $validator->errors()->all()], 422);
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'role_id' => 2
         ]);
 
         $token = $user->createToken('NewsAppAuthentication')->accessToken;
