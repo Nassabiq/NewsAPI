@@ -10,4 +10,5 @@ interface NewsRepositoryInterface
     public function storeNews(array $data);
     public function updateNews(array $data, int $id);
     public function deleteNews(int $id);
+    public function comments();
 }

@@ -20,7 +20,13 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware('auth:api')->group(function () {
-    Route::resource('/news', NewsController::class)->except(['create', 'edit']);
+
+    // NEWS SECTION
+    Route::get('/news', [NewsController::class, 'index']);
+    Route::get('/news/{news}', [NewsController::class, 'show']);
+    Route::post('/news', [NewsController::class, 'store']);
+    Route::patch('/news/{news}', [NewsController::class, 'update']);
+    Route::delete('/news/{news}', [NewsController::class, 'destroy']);
 
     //Logout
     Route::post('/logout', [AuthController::class, 'logout']);

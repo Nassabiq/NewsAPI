@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('log_name');
-            $table->string('activity');
+            $table->longText('activity');
             $table->foreignId('causer')->constrained()->references('id')->on('users');
             $table->timestamps();
         });

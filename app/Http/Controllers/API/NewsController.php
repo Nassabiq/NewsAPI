@@ -14,7 +14,7 @@ class NewsController extends Controller
 
     public function __construct(NewsRepositoryInterface $newsRepositoryInterface)
     {
-        $this->middleware('role')->except(['index', 'show']);
+        $this->middleware('role')->except(['index', 'show', 'comments']);
         $this->newsRepositoryInterface = $newsRepositoryInterface;
     }
 
@@ -39,7 +39,7 @@ class NewsController extends Controller
      */
     public function store(NewsRequest $request)
     {
-        $imageName = $request->hasFile('image') ? $this->storeImageTmp($request->image) : null;
+        $imageName = $request->hasFile('image') ? $this->storeImage($request->image) : null;
 
         $data = $request->all();
         $data['image'] = $imageName;
@@ -48,7 +48,7 @@ class NewsController extends Controller
         return $this->newsRepositoryInterface->storeNews($data);
     }
 
-    public function storeImageTmp($request)
+    public function storeImage($request)
     {
         $path = public_path('tmp');
         $imageName = $request->getClientOriginalName();
@@ -64,7 +64,7 @@ class NewsController extends Controller
      */
     public function update(NewsRequest $request, string $id)
     {
-        $imageName = $request->hasFile('image') ? $this->storeImageTmp($request->image) : null;
+        $imageName = $request->hasFile('image') ? $this->storeImage($request->image) : null;
 
         $data = $request->all();
         $data['image'] = $imageName;
@@ -78,5 +78,10 @@ class NewsController extends Controller
     public function destroy(string $id)
     {
         return $this->newsRepositoryInterface->deleteNews($id);
+    }
+
+    public function comments()
+    {
+        return $this->newsRepositoryInterface->comments();
     }
 }

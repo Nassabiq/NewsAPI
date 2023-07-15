@@ -1,18 +1,23 @@
 <?php
 
+namespace App\Traits;
+
 trait ApiResponse
 {
     public function successResponse($messages, $data, $statusCode = 200)
     {
-        $this->response($messages, $data, $statusCode);
+        return response()->json([
+            "messages" => $messages,
+            "data" => $data,
+            "status" => $statusCode,
+        ], $statusCode);
     }
 
-    public function failedResponse($messages, $data, $statusCode)
+    public function failedResponse($messages, $statusCode)
     {
-        $this->response($messages, $data, $statusCode, false);
-    }
-
-    public function response($messages, $data, $statusCode, $isSuccess = true)
-    {
+        return response()->json([
+            "messages" => $messages,
+            "status" => $statusCode,
+        ], $statusCode);
     }
 }
