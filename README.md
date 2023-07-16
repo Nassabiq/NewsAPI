@@ -82,6 +82,12 @@ PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=your_personal_access_client_secret
 
 10. And done.
 
+Postman collection can be accessed here
+
+```
+https://anassabiq.postman.co/workspace/My-Workspaces~c5545a70-4f96-4e9e-a350-9dcb86d827a4/collection/9280138-a29cf0a8-52e4-486c-8c56-aa28ad443966?action=share&creator=9280138
+```
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
